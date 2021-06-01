@@ -1,0 +1,29 @@
+{
+    "name": "worldcom-project",
+    "version": "1.0.0",
+    "description": "Json and request handling",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js",
+        "dev": "nodemon app.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/yuvalll666/worldcom-project.git"
+    },
+    "author": "Yuval Azarya",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/yuvalll666/worldcom-project/issues"
+    },
+    "homepage": "https://github.com/yuvalll666/worldcom-project#readme",
+    "dependencies": {
+        "axios": "^0.21.1",
+        "express": "^4.17.1"
+    },
+    "devDependencies": {
+        "@types/node": "^15.6.1",
+        "morgan": "^1.10.0",
+        "nodemon": "^2.0.7"
+    }
+}
