@@ -1,4 +1,11 @@
 import { User, Todo, Post, Comment } from "./interfaces";
+const {
+    complete_task_count,
+    company_names_by_array,
+    comment_count_per_post,
+    user_post_count,
+    create_user_obj,
+} = require("./tasks_helper_functions");
 
 /**
  * Filters company names by pre-known parameters
@@ -10,34 +17,16 @@ function get_filtered_comp_names(
     users: Array<User>,
     todos: Array<Todo>
 ): Array<string> {
-    // Create object with user_id as key and amount of complete tasks as value
-    let c_task_users: { [key: number]: any } = {};
-    for (const todo of todos) {
-        if (todo.completed) {
-            const u_id: number = todo.userId;
-            if (!c_task_users[u_id]) {
-                c_task_users[u_id] = 1;
-            } else {
-                c_task_users[u_id] = c_task_users[u_id] + 1;
-            }
-        }
-    }
+    const users_c_task: { [key: string]: any } = complete_task_count(todos);
 
     //  Create an array with users ids that have more then 3 tasks completed
-    let tasks_complete: Array<number> = [];
-    for (const [key, value] of Object.entries(c_task_users)) {
-        value > 3 ? tasks_complete.push(parseInt(key)) : null;
+    const comp_tasks_arr: Array<number> = [];
+    for (const [key, value] of Object.entries(users_c_task)) {
+        value > 3 ? comp_tasks_arr.push(parseInt(key)) : null;
     }
 
-    // Create an array of company names (strings) that if they are included in tasks_complete array
-    let company_names: Array<string> = [];
-    for (const user of users) {
-        if (tasks_complete.includes(user.id)) {
-            if (!company_names.includes(user.company.name)) {
-                company_names.push(user.company.name);
-            }
-        }
-    }
+    // Filtered company names
+    const company_names = company_names_by_array(comp_tasks_arr, users);
 
     return company_names;
 }
@@ -75,58 +64,33 @@ function get_name_and_email(
     posts: Array<Post>,
     comments: Array<Comment>
 ): Array<{ [key: string]: string }> {
-    /*
-    Create an object contains post_id as key and amount of
-    comments per post as value
-    */
-    let post_comments: { [key: number]: any } = {};
-    for (const comment of comments) {
-        if (!post_comments[comment.postId]) {
-            post_comments[comment.postId] = 1;
-        } else {
-            post_comments[comment.postId] = post_comments[comment.postId] + 1;
-        }
-    }
+    const post_comments_count: { [key: number]: any } =
+        comment_count_per_post(comments);
 
     // Create an array of posts that has more then 3 comments
-    let posts_ids: Array<number> = [];
-    for (const [key, value] of Object.entries(post_comments)) {
+    const posts_ids: Array<number> = [];
+    for (const [key, value] of Object.entries(post_comments_count)) {
         value > 3 ? posts_ids.push(parseInt(key)) : null;
     }
 
     /*
     Create an object contains user_id as key and amount of posts
     with more then 3 comments as value
-     */
-    let users_posts_count: { [key: number]: any } = {};
-    for (const post of posts) {
-        if (posts_ids.includes(post.id)) {
-            if (!users_posts_count[post.userId]) {
-                users_posts_count[post.userId] = 1;
-            } else {
-                users_posts_count[post.userId] =
-                    users_posts_count[post.userId] + 1;
-            }
-        }
-    }
+    */
+    const users_posts_count: { [key: number]: any } = user_post_count(
+        posts_ids,
+        posts
+    );
 
-    // Create an array of user ids that have more the 2 posts from users_posts_count
-    let users_ids: Array<number> = [];
+    const users_ids: Array<number> = [];
     for (const [key, value] of Object.entries(users_posts_count)) {
         value > 2 ? users_ids.push(parseInt(key)) : null;
     }
 
-    // Create an array of users containing username and email
-    let resulte: Array<{ [key: string]: any }> = [];
-    for (const user of users) {
-        if (users_ids.includes(user.id)) {
-            // If no location of user don't include
-            let geo = user.address.geo ? user.address.geo : null;
-            if (geo && geo.lat && geo.lng) {
-                resulte.push({ name: user.name, email: user.email });
-            }
-        }
-    }
+    const resulte: Array<{ [key: string]: any }> = create_user_obj(
+        users_ids,
+        users
+    );
 
     return resulte;
 }

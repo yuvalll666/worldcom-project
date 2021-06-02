@@ -25,10 +25,10 @@ app.get("/:search*?", (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const user_info = get_name_and_email(users, posts, comments);
     const user_todos = show_todos(todos);
     return res.send({
-        filtered_comp_names,
-        searched_comp_names,
-        user_info,
-        user_todos,
+        task_1: filtered_comp_names,
+        task_2: searched_comp_names,
+        task_3: user_info,
+        task_4: user_todos,
     });
 }));
 app.listen(PORT, () => console.log(`Running on port: ${PORT}`));

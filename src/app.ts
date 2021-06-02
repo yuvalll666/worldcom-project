@@ -33,10 +33,10 @@ app.get("/:search*?", async (req: any, res: any) => {
         show_todos(todos);
 
     return res.send({
-        filtered_comp_names,
-        searched_comp_names,
-        user_info,
-        user_todos,
+        task_1: filtered_comp_names,
+        task_2: searched_comp_names,
+        task_3: user_info,
+        task_4: user_todos,
     });
 });
 
