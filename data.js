@@ -55,9 +55,19 @@ function get_comments() {
         }
     });
 }
+function get_all_data() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const users = yield get_users();
+        const posts = yield get_posts();
+        const todos = yield get_todos();
+        const comments = yield get_comments();
+        return { users, posts, todos, comments };
+    });
+}
 module.exports = {
     get_users,
     get_todos,
     get_posts,
     get_comments,
+    get_all_data,
 };

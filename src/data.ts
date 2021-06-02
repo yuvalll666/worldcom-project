@@ -55,9 +55,23 @@ async function get_comments(): Promise<Comment[]> {
     }
 }
 
+/**
+ *
+ * @returns Object containing all data from given API
+ */
+async function get_all_data(): Promise<any> {
+    const users = await get_users();
+    const posts = await get_posts();
+    const todos = await get_todos();
+    const comments = await get_comments();
+
+    return { users, posts, todos, comments };
+}
+
 module.exports = {
     get_users,
     get_todos,
     get_posts,
     get_comments,
+    get_all_data,
 };
