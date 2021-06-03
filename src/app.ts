@@ -14,11 +14,12 @@ const {
  * sends data to user
  */
 app.get("/:search*?", async (req: any, res: any) => {
-    const search_term: string | null = req.params.search
-        ? req.params.search
-        : null;
     // Get all needed data from API
     const { users, posts, todos, comments } = await get_all_data();
+
+    const search_term: string | null = req.params.search
+        ? req.params.search.toLowerCase()
+        : null;
 
     const filtered_comp_names: Array<string> = get_filtered_comp_names(
         users,

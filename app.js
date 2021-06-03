@@ -14,10 +14,10 @@ const PORT = 3000;
 const { get_all_data } = require("./data");
 const { get_filtered_comp_names, get_searched_comp_names, get_name_and_email, show_todos, } = require("./tasks");
 app.get("/:search*?", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const search_term = req.params.search
-        ? req.params.search
-        : null;
     const { users, posts, todos, comments } = yield get_all_data();
+    const search_term = req.params.search
+        ? req.params.search.toLowerCase()
+        : null;
     const filtered_comp_names = get_filtered_comp_names(users, todos);
     const searched_comp_names = search_term
         ? get_searched_comp_names(filtered_comp_names, search_term)
